@@ -8,8 +8,18 @@ import ShowCerts from "./components/ShowCerts";
 
 
 export const AboutPage = () => {
-  const { bio, photos, work_intro, work, education_intro, education, certificates_intro, certificates } = cv.about
-  const { profiles } = cv
+  const about = cv.about || {};
+  const {
+    bio = [],
+    photos = [],
+    work_intro = "",
+    work = [],
+    education_intro = "",
+    education = [],
+    certificates_intro = "",
+    certificates = [],
+  } = about;
+  const { profiles = [] } = cv || {};
 
   return (
     <div className="flex flex-col gap-16 md:gap-24">
@@ -22,31 +32,35 @@ export const AboutPage = () => {
         </p>
       </div>
       <div className="mb-8 md:hidden">    
-        <div 
-          className="animate-in"
-          style={{ "--index": 1 }}
-        >
-          <img
-            src={photos[0].image}
-            alt={photos[0].alt}
-            width={324}
-            height={139}
-            className="pointer-events-none relative inset-0 h-64 -rotate-12 rounded-xl bg-gray-400 object-cover shadow-md"
-          />
-        </div>
+        {photos.length >= 3 && (
+          <>
+            <div 
+              className="animate-in"
+              style={{ "--index": 1 }}
+            >
+              <img
+                src={photos[0].image}
+                alt={photos[0].alt}
+                width={324}
+                height={139}
+                className="pointer-events-none relative inset-0 h-64 -rotate-12 rounded-xl bg-gray-400 object-cover shadow-md"
+              />
+            </div>
 
-        <div
-          className="animate-in"
-          style={{ "--index": 2 }}
-        >
-          <img
-            src={photos[2].image}
-            alt={photos[2].alt}
-            width={220}
-            height={260}
-            className="pointer-events-none absolute inset-0 -top-64 left-[50%] w-48 rotate-6 rounded-xl bg-gray-400 object-cover shadow-md"
-          />
-        </div>
+            <div
+              className="animate-in"
+              style={{ "--index": 2 }}
+            >
+              <img
+                src={photos[2].image}
+                alt={photos[2].alt}
+                width={220}
+                height={260}
+                className="pointer-events-none absolute inset-0 -top-64 left-[50%] w-48 rotate-6 rounded-xl bg-gray-400 object-cover shadow-md"
+              />
+            </div>
+          </>
+        )}
       </div>
       <div className="hidden md:block">
         <Gallery />

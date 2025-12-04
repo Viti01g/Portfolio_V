@@ -30,13 +30,13 @@
 			},
 			{
 				"name": "minishell",
-				"image": "home/minishell.webp",
+				"image": "/home/minishell.webp",
 				"summary": "Recreating a shell in C using bash as a reference.",
 				"url": "https://github.com/Viti01g/Minishell"
 			},
 			{
 				"name": "so_long",
-				"image": "/imgs/soLong42.webp",
+				"image": "/home/soLong42.webp",
 				"summary": "A 2D game where a player must collect all items and escape through the exit.",
 				"url": "https://github.com/Viti01g/42_Cursus/tree/main/so_long"
 			}
@@ -66,25 +66,25 @@
 				"image": "/about/ski.webp",
 				"alt": "Day of ski",
 				"caption": "ski-day.jpg",
-				"date": "2003-10-27"
+				"date": "2021-12-27"
 			},
 			{
 				"image": "/about/bike&me.webp",
 				"alt": "living my bike",
 				"caption": "bike&me.jpg",
-				"date": "2014-07-30"
+				"date": "2025-07-05"
 			},
 			{
 				"image": "/about/León.webp",
 				"alt": "photo of León",
 				"caption": "León.jpg",
-				"date": "2023-05-31"
+				"date": "2023-06-12"
 			},
 			{
 				"image": "/about/AndorraSun.webp",
 				"alt": "taking a brake in Andorra",
 				"caption": "Break time.jpg",
-				"date": "2024-08-31"
+				"date": "2025-01-23"
 			}
 		],
 		"bio": [
