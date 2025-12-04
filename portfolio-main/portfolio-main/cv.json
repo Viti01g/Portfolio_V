@@ -12,13 +12,13 @@
 				"url": "https://github.com/Viti01g"
 			}
 		],
-		"image": "/links/mguardia.webp",
+		"image": "/links/vruiz-go.webp",
 		"intro": "hey, Viti here!",
-		"summary": "Software Engineering student at 42 Madrid 👾. I consider myself a proactive person, with a great work ethic and good social skills. I specialize in automation-driven processes, leveraging DevOps best practices and modern cloud environments.",
+		"summary": "Software Engineering student at 42 Madrid 💻. I consider myself a proactive person, with a great work ethic and good social skills. I specialize in full stack application development.",
 		"projects": [
 			{
 				"name": "Ft_IRC",
-				"image": "/home/webserv.webp",
+				"image": "/home/irc.webp",
 				"summary": "IRC server implementation following the IRC protocol. Supports multiple clients, channels, and operator commands.",
 				"url": "https://github.com/Vinnie92git/ft_irc"
 			},
@@ -63,41 +63,40 @@
 	"about": {
 		"photos": [
 			{
-				"image": "/about/littleme.webp",
-				"alt": "young me",
-				"caption": "little-me.jpg",
+				"image": "/about/ski.webp",
+				"alt": "Day of ski",
+				"caption": "ski-day.jpg",
 				"date": "2003-10-27"
 			},
 			{
-				"image": "/about/madrid.webp",
-				"alt": "photo of madrid",
-				"caption": "madrid.jpg",
+				"image": "/about/bike&me.webp",
+				"alt": "living my bike",
+				"caption": "bike&me.jpg",
 				"date": "2014-07-30"
 			},
 			{
-				"image": "/about/me.webp",
-				"alt": "me",
-				"caption": "me.jpg",
+				"image": "/about/León.webp",
+				"alt": "photo of León",
+				"caption": "León.jpg",
 				"date": "2023-05-31"
 			},
 			{
-				"image": "/about/mac.webp",
-				"alt": "coding on my personal computer",
-				"caption": "coding.jpg",
+				"image": "/about/AndorraSun.webp",
+				"alt": "taking a brake in Andorra",
+				"caption": "Break time.jpg",
 				"date": "2024-08-31"
 			}
 		],
 		"bio": [
-			"Hi, I'm Victor from Madrid, Spain. I've been coding since 2020. A year later, I was accepted into 42 School, where I learned a variety of technologies and foundational software development principles.",
-			"Currently, I'm focusing on cloud environments and working to enhance my skills through certifications. I have a particular interest in automation and DevOps practices.",
-			"When I'm not at my desk, you'll probably find me lifting weights, playing football, or exploring new restaurants 🙂"
+			"Hi, I'm Victor from Madrid, Spain. I've been coding since 2020. In this year, I started programming making video games in C# with Unity accepted into 42 School, where I learned a variety of technologies and foundational software development principles.",
+			"When I'm not at my desk, you'll probably find me in the gym lifting weights, playing some sports, or riding my bike 🏋️"
 		],
 		"work_intro": "Here are some of the places I have worked.",
 		"work": [
 			{
 				"area": "Video Game Devgeloper",
 				"company": "CKolmos",
-				"logo": "/about/fever.webp",
+				"logo": "/about/estudio_ckolmos.webp",
 				"url": "https://ckolmos.blogspot.com/",
 				"date": "Jan 2022 - Jun 2022",
 				"key": "1"
@@ -116,7 +115,7 @@
 			{
 				"area": "Multiplatform Application Development",
 				"company": "Formación profesional Nebrija",
-				"logo": "/about/42.webp",
+				"logo": "/about/nebrijaFp.webp",
 				"url": "https://www.fpnebrija.com/",
 				"date": "Sept 2023 - Jun 2025",
 				"key": "2"
@@ -124,7 +123,7 @@
 			{
 				"area": "3D Animation, Games & Interactive Environments",
 				"company": "Escuela CES - Imagen y Sonido",
-				"logo": "/about/42.webp",
+				"logo": "/about/CesFp.webp",
 				"url": "https://www.escuelaces.com/",
 				"date": "Sept 2020 - Jun 2022",
 				"key": "3"
