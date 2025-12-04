@@ -36,7 +36,7 @@
       },
       {
         "name": "so_long",
-        "image": "C:\Users\vruiz\Documents\Portfolio\imgs\soLong42.png",
+        "image": "/imgs/soLong42.webp",
         "summary": "Representing a landscape as a 3D object in which all surfaces are outlined in lines.",
         "url": "https://github.com/MGuardia10/42cursus_fdf"
       }
