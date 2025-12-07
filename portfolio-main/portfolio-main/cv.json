@@ -63,16 +63,16 @@
 	"about": {
 		"photos": [
 			{
-				"image": "/about/ski.webp",
-				"alt": "Day of ski",
-				"caption": "ski-day.jpg",
-				"date": "2021-12-27"
-			},
-			{
 				"image": "/about/bike&me.webp",
 				"alt": "living my bike",
 				"caption": "bike&me.jpg",
 				"date": "2025-07-05"
+			},
+			{
+				"image": "/about/ski.webp",
+				"alt": "Day of ski",
+				"caption": "ski-day.jpg",
+				"date": "2021-12-27"
 			},
 			{
 				"image": "/about/León.webp",
