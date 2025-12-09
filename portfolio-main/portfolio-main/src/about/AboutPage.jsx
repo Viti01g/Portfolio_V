@@ -28,7 +28,7 @@ export const AboutPage = () => {
           About
         </h1>
         <p className="animate-in text-text-light dark:text-text-dark">
-          A glimpse into me.
+          A little more of me.
         </p>
       </div>
       <div className="mb-8 md:hidden">    
