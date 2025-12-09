@@ -128,14 +128,14 @@ export const AboutPage = () => {
             <ShowItems items={ education } />
           </div>
         </Section>
-        <Section heading="Certifications" headingAlignment="left">
+        {/* <Section heading="Certifications" headingAlignment="left">
           <div className="flex w-full flex-col gap-8 text-title-light dark:text-title-dark">
             <p>
               {certificates_intro}
             </p>
             <ShowCerts items={ certificates } />
           </div>
-        </Section>
+        </Section> */}
       </div>
     </div>
   );
