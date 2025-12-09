@@ -17,6 +17,12 @@
 		"summary": "Software Engineering student at 42 Madrid 💻. I consider myself a proactive person, with a great work ethic and good social skills. I specialize in full stack application development.",
 		"projects": [
 			{
+				"name": "TFG Desarrollo de Aplicaciones Multiplataforma",
+				"image": "/home/Tfg_dam.webp",
+				"summary": "Development of a native Android mobile application (Kotlin) supported by a Spring Boot and MySQL backend, designed to optimize healthcare management.",
+				"url": "https://github.com/Viti01g/TFG_DAM"
+			},
+			{
 				"name": "Ft_IRC",
 				"image": "/home/irc.webp",
 				"summary": "IRC server implementation following the IRC protocol. Supports multiple clients, channels, and operator commands.",
@@ -27,12 +33,6 @@
 				"image": "/home/inception.webp",
 				"summary": "Set up a small-medium infrastructure using Docker and Docker Compose.",
 				"url": "https://github.com/Viti01g/42_Inception"
-			},
-			{
-				"name": "TFG Desarrollo de Aplicaciones Multiplataforma",
-				"image": "/home/TFG_DAM.webp",
-				"summary": "Development of a native Android mobile application (Kotlin) supported by a Spring Boot and MySQL backend, designed to optimize healthcare management.",
-				"url": "https://github.com/Viti01g/TFG_DAM"
 			},
 			{
 				"name": "minishell",
