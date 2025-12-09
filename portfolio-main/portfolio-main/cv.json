@@ -29,6 +29,12 @@
 				"url": "https://github.com/Viti01g/42_Inception"
 			},
 			{
+				"name": "TFG Desarrollo de Aplicaciones Multiplataforma",
+				"image": "/home/TFG_DAM.webp",
+				"summary": "Development of a native Android mobile application (Kotlin) supported by a Spring Boot and MySQL backend, designed to optimize healthcare management.",
+				"url": "https://github.com/Viti01g/TFG_DAM"
+			},
+			{
 				"name": "minishell",
 				"image": "/home/minishell.webp",
 				"summary": "Recreating a shell in C using bash as a reference.",
