@@ -13,7 +13,7 @@
 			}
 		],
 		"image": "/links/vruiz-go.webp",
-		"intro": "hey, Viti here!",
+		"intro": "Hey, Viti here!",
 		"summary": "Software Engineering student at 42 Madrid 💻. I consider myself a proactive person, with a great work ethic and good social skills. I specialize in full stack application development.",
 		"projects": [
 			{
@@ -26,7 +26,7 @@
 				"name": "Inception",
 				"image": "/home/inception.webp",
 				"summary": "Set up a small-medium infrastructure using Docker and Docker Compose.",
-				"url": "https://github.com/MGuardia10/42cursus_inception"
+				"url": "https://github.com/Viti01g/42_Inception"
 			},
 			{
 				"name": "minishell",
