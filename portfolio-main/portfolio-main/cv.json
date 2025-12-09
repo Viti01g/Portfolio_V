@@ -18,7 +18,7 @@
 		"projects": [
 			{
 				"name": "TFG Desarrollo de Aplicaciones Multiplataforma",
-				"image": "/home/Tfg_dam.webp",
+				"image": "/home/tfgdam.webp",
 				"summary": "Development of a native Android mobile application (Kotlin) supported by a Spring Boot and MySQL backend, designed to optimize healthcare management.",
 				"url": "https://github.com/Viti01g/TFG_DAM"
 			},
