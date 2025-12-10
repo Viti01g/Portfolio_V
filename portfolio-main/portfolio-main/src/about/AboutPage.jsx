@@ -78,7 +78,7 @@ export const AboutPage = () => {
             }
           </div>
         </Section>
-        <Section heading="Connect" headingAlignment="left">
+        {/* <Section heading="Connect" headingAlignment="left">
           <ul className="animated-list grid flex-grow grid-cols-1 gap-3 md:grid-cols-2">
             {profiles.map((profile) => (
               <li className="col-span-1 transition-opacity" key={profile.network}>
@@ -111,7 +111,7 @@ export const AboutPage = () => {
               </li>
             ))}
           </ul>
-        </Section>
+        </Section> */}
         <Section heading="Work" headingAlignment="left">
           <div className="flex w-full flex-col gap-8 text-title-light dark:text-title-dark">
             <p>

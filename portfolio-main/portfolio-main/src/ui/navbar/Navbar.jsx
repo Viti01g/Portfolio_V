@@ -10,7 +10,7 @@ import { ThemeButton } from './ThemeButton'
 const links = [
 	{ label: "Home", href: "/" },
 	{ label: "About", href: "/about" },
-	{ label: "Links", href: "/links" },
+	{ label: "Contact", href: "/links" },
 ];
   
 export const Navbar = () => {
