@@ -13,7 +13,7 @@
 			}
 		],
 		"image": "/links/vruiz-go.webp",
-		"intro": "Hey, Viti here!",
+		"intro": "Hey, Victor here!",
 		"summary": "Software Engineering student at 42 Madrid 💻. I consider myself a proactive person, with a great work ethic and good social skills. I specialize in full stack application development.",
 		"projects": [
 			{
@@ -101,7 +101,7 @@
 		],
 		"bio": [
 			"Hi, I'm Victor from Madrid, Spain. I've been coding since 2020. In this year, I started programming making video games in C# with Unity accepted into 42 School, where I learned a variety of technologies and foundational software development principles.",
-			"When I'm not at my desk, you'll probably find me in the gym lifting weights, playing some sports, or riding my bike 🏋️"
+			"When I'm not at my desk, you'll probably find me in the gym lifting weights, playing some sports, or riding my bike 🏋️."
 		],
 		"work_intro": "Here are some of the places I have worked.",
 		"work": [
