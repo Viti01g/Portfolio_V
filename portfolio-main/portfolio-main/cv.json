@@ -39,18 +39,6 @@
 				"image": "/home/minishell.webp",
 				"summary": "Recreating a shell in C using bash as a reference.",
 				"url": "https://github.com/Viti01g/Minishell"
-			},
-			{
-				"name": "so_long",
-				"image": "/home/soLong42.webp",
-				"summary": "A 2D game where a player must collect all items and escape through the exit.",
-				"url": "https://github.com/Viti01g/42_Cursus/tree/main/so_long"
-			},
-			{
-				"name": "Philosophers",
-				"image": "/home/philo.webp",
-				"summary": "C implementation of Dining Philosophers focusing on synchronization and deadlock avoidance.",
-				"url": "https://github.com/Viti01g/Philosophers_42"
 			}
 		]
 	},
