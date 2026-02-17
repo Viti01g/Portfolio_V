@@ -47,7 +47,7 @@ export const ProjectsPage = () => {
         </p>
         {githubUrl && (
           <div className="animate-in mt-6 flex items-center gap-2 text-text-light dark:text-text-dark">
-            <span>✨ Proyectos sincronizados automáticamente desde</span>
+            <span>✨ Projects automatically synchronized from</span>
             <a
               href={githubUrl}
               target="_blank"

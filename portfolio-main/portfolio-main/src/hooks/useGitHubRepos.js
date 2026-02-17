@@ -7,23 +7,35 @@ const extractImageFromMarkdown = (markdown, repoUrl) => {
   // Buscar imágenes en formato markdown: ![alt](url)
   const mdImageMatch = markdown.match(/!\[.*?\]\((.*?)\)/);
   if (mdImageMatch && mdImageMatch[1]) {
-    let imageUrl = mdImageMatch[1];
-    // Si es una URL relativa, convertirla a absoluta
-    if (!imageUrl.startsWith('http')) {
-      imageUrl = `${repoUrl}/raw/main/${imageUrl}`.replace('//', '/').replace(':/', '://');
+    let imageUrl = mdImageMatch[1].trim();
+    
+    // Si es una URL absoluta, devolverla tal cual
+    if (imageUrl.startsWith('http://') || imageUrl.startsWith('https://')) {
+      return imageUrl;
     }
-    return imageUrl;
+    
+    // Si es una URL relativa, convertirla a absoluta
+    // Limpiar barras al inicio
+    imageUrl = imageUrl.replace(/^\.?\/+/, '');
+    
+    // Construir URL raw de GitHub (intentar con main)
+    return `${repoUrl}/raw/main/${imageUrl}`;
   }
   
   // Buscar imágenes en formato HTML: <img src="url">
   const htmlImageMatch = markdown.match(/<img[^>]+src=["']([^"']+)["']/i);
   if (htmlImageMatch && htmlImageMatch[1]) {
-    let imageUrl = htmlImageMatch[1];
-    // Si es una URL relativa, convertirla a absoluta
-    if (!imageUrl.startsWith('http')) {
-      imageUrl = `${repoUrl}/raw/main/${imageUrl}`.replace('//', '/').replace(':/', '://');
+    let imageUrl = htmlImageMatch[1].trim();
+    
+    // Si es una URL absoluta, devolverla tal cual
+    if (imageUrl.startsWith('http://') || imageUrl.startsWith('https://')) {
+      return imageUrl;
     }
-    return imageUrl;
+    
+    // Si es una URL relativa, convertirla a absoluta
+    imageUrl = imageUrl.replace(/^\.?\/+/, '');
+    
+    return `${repoUrl}/raw/main/${imageUrl}`;
   }
   
   return null;
@@ -63,6 +75,7 @@ const extractDescriptionFromMarkdown = (markdown) => {
 
 // Función para obtener el README de un repo
 const fetchReadme = async (owner, repo) => {
+  // Usar try-catch para manejar errores sin que aparezcan en consola
   try {
     const headers = {
       'Accept': 'application/vnd.github.v3.raw'
@@ -75,14 +88,26 @@ const fetchReadme = async (owner, repo) => {
     
     const response = await fetch(
       `https://api.github.com/repos/${owner}/${repo}/readme`,
-      { headers }
-    );
+      { 
+        headers,
+        // Suprimir errores 404 en consola
+        signal: AbortSignal.timeout(5000) // 5 segundos timeout
+      }
+    ).catch(() => null);
     
+    // Si fetch falló, retornar null
+    if (!response) return null;
+    
+    // Si es 404, el repo no tiene README - esto es normal
+    if (response.status === 404) return null;
+    
+    // Si hay otro error, retornar null sin loguear
     if (!response.ok) return null;
+    
     const readme = await response.text();
     return readme;
   } catch (error) {
-    console.log(`No se pudo obtener README para ${repo}`);
+    // Manejar errores silenciosamente
     return null;
   }
 };
@@ -97,6 +122,8 @@ export const useGitHubRepos = (username) => {
       setLoading(false);
       return;
     }
+
+    let cancelled = false;
 
     const fetchRepos = async () => {
       try {
@@ -117,11 +144,9 @@ export const useGitHubRepos = (username) => {
           { headers }
         );
         
-        // Verificar rate limit
+        // Verificar rate limit solo si hay error
         const remaining = response.headers.get('X-RateLimit-Remaining');
         const resetTime = response.headers.get('X-RateLimit-Reset');
-        
-        console.log(`GitHub API - Peticiones restantes: ${remaining}`);
         
         if (!response.ok) {
           if (response.status === 403) {
@@ -148,6 +173,9 @@ export const useGitHubRepos = (username) => {
           const portfolioNames = ['portfolio', 'portfolio_v', 'portfolio-main', 'my-portfolio'];
           if (portfolioNames.some(name => repo.name.toLowerCase().includes(name))) return false;
           
+          // Excluir 42_Cursus
+          if (repo.name.toLowerCase() === '42_cursus') return false;
+          
           return true;
         });
 
@@ -156,55 +184,73 @@ export const useGitHubRepos = (username) => {
           name: repo.name,
           summary: repo.description || 'Sin descripción',
           url: repo.html_url,
-          image: null,
+          image: '/home/default-project.webp',
           stars: repo.stargazers_count,
           language: repo.language,
           updated_at: repo.updated_at,
           isGitHubRepo: true
         }));
 
-        // Mostrar repos inmediatamente
-        setRepos(basicRepos);
-        setError(null);
-        setLoading(false);
+        // Mostrar repos inmediatamente con imagen por defecto
+        if (!cancelled) {
+          setRepos(basicRepos);
+          setError(null);
+          setLoading(false);
+        }
 
-        // Obtener README solo de los primeros 10 repos para no saturar la API
-        // Esto se hace en segundo plano sin bloquear la UI
-        const topRepos = filteredRepos.slice(0, 10);
-        const reposWithReadme = await Promise.all(
+        // Obtener README en segundo plano para extraer imágenes
+        if (cancelled) return;
+        const topRepos = filteredRepos.slice(0, 15);
+        
+        // Procesar repos en paralelo para obtener imágenes
+        const reposWithImages = await Promise.all(
           topRepos.map(async (repo, index) => {
             try {
               const readme = await fetchReadme(username, repo.name);
-              const image = extractImageFromMarkdown(readme, repo.html_url);
-              const description = extractDescriptionFromMarkdown(readme);
               
-              return {
-                ...basicRepos[index],
-                summary: description || repo.description || 'Sin descripción',
-                image: image || null
-              };
+              if (readme) {
+                const image = extractImageFromMarkdown(readme, repo.html_url);
+                const description = extractDescriptionFromMarkdown(readme);
+                
+                return {
+                  ...basicRepos[index],
+                  summary: description || basicRepos[index].summary,
+                  image: image || basicRepos[index].image
+                };
+              }
+              
+              return basicRepos[index];
             } catch (err) {
-              console.log(`Error obteniendo README de ${repo.name}:`, err);
               return basicRepos[index];
             }
           })
         );
-
-        // Actualizar con información de README
-        const finalRepos = basicRepos.map((repo, index) => 
-          index < 10 ? reposWithReadme[index] : repo
-        );
         
-        setRepos(finalRepos);
+        // Actualizar todos los repos - crear un nuevo array completamente
+        const finalRepos = basicRepos.map((repo, index) => {
+          if (index < reposWithImages.length) {
+            return reposWithImages[index];
+          }
+          return repo;
+        });
+        if (!cancelled) {
+          setRepos(finalRepos);
+        }
       } catch (err) {
         console.error('Error fetching GitHub repos:', err);
-        setError(err.message);
-        setRepos([]);
-        setLoading(false);
+        if (!cancelled) {
+          setError(err.message);
+          setRepos([]);
+          setLoading(false);
+        }
       }
     };
 
     fetchRepos();
+    
+    return () => {
+      cancelled = true;
+    };
   }, [username]);
 
   return { repos, loading, error };
