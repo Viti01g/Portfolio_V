@@ -22,6 +22,17 @@ My personal portfolio website to showcase my projects and resume. It's design to
 	npm run dev
 4 - configure `cv.json` with your personal information and projects.
 
-5 - When finish, run the following command and upload `dist` directory in your preferred hosting.
+5 - (Optional) To avoid GitHub API rate limits, create a `.env` file:
+	
+	cp .env.example .env
+	
+   Then add your GitHub token to `.env`:
+   - Visit https://github.com/settings/tokens
+   - Generate a new token (classic) with `public_repo` scope
+   - Add it to `.env`: `VITE_GITHUB_TOKEN=your_token_here`
+   
+   Without token: 60 requests/hour | With token: 5000 requests/hour
+
+6 - When finish, run the following command and upload `dist` directory in your preferred hosting.
 
 	npm run build

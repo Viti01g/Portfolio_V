@@ -7,6 +7,7 @@ import { OutletRouter } from './OutletRouter'
 const HomePage = lazy(() => import('../home/HomePage'))
 const AboutPage = lazy(() => import('../about/AboutPage'))
 const LinksPage = lazy(() => import('../links/LinksPage'))
+const ProjectsPage = lazy(() => import('../projects/ProjectsPage'))
 
 export const router = createBrowserRouter([
 	{
@@ -20,6 +21,10 @@ export const router = createBrowserRouter([
 		{
 			path: 'about',
 			element: <Suspense fallback={<Spiner />}><AboutPage /></Suspense>
+		},
+		{
+			path: 'projects',
+			element: <Suspense fallback={<Spiner />}><ProjectsPage /></Suspense>
 		},
 		{
 			path: 'links',
