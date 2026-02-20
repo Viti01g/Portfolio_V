@@ -100,7 +100,7 @@ export const ProjectsPage = () => {
         {loading && (
           <div className="text-center py-12 text-text-light dark:text-text-dark">
             <div className="inline-block animate-spin rounded-full h-8 w-8 border-4 border-blue-600 border-t-transparent"></div>
-            <p className="mt-4">Cargando proyectos de GitHub...</p>
+            <p className="mt-4">Loading projects from GitHub...</p>
           </div>
         )}
         

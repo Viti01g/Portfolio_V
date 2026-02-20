@@ -1,4 +1,37 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
+
+const CACHE_KEY = 'github_repos_cache';
+const CACHE_TTL = 30 * 60 * 1000; // 30 minutos
+
+// Leer caché de localStorage
+const getCache = (username) => {
+  try {
+    const raw = localStorage.getItem(`${CACHE_KEY}_${username}`);
+    if (!raw) return null;
+    const cached = JSON.parse(raw);
+    if (Date.now() - cached.timestamp > CACHE_TTL) return null;
+    return cached.data;
+  } catch {
+    return null;
+  }
+};
+
+// Guardar caché en localStorage
+const setCache = (username, data) => {
+  try {
+    localStorage.setItem(`${CACHE_KEY}_${username}`, JSON.stringify({
+      timestamp: Date.now(),
+      data
+    }));
+  } catch {
+    // localStorage lleno o no disponible
+  }
+};
+
+// Generar imagen Open Graph de GitHub (siempre disponible para repos públicos)
+const getGitHubOGImage = (owner, repoName) => {
+  return `https://opengraph.githubassets.com/1/${owner}/${repoName}`;
+};
 
 // Función para extraer la primera imagen del README
 const extractImageFromMarkdown = (markdown, repoUrl) => {
@@ -113,9 +146,19 @@ const fetchReadme = async (owner, repo) => {
 };
 
 export const useGitHubRepos = (username) => {
-  const [repos, setRepos] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [repos, setRepos] = useState(() => {
+    if (username) {
+      const cached = getCache(username);
+      if (cached) return cached;
+    }
+    return [];
+  });
+  const [loading, setLoading] = useState(() => {
+    if (username) return !getCache(username);
+    return true;
+  });
   const [error, setError] = useState(null);
+  const reposRef = useRef([]);
 
   useEffect(() => {
     if (!username) {
@@ -123,18 +166,22 @@ export const useGitHubRepos = (username) => {
       return;
     }
 
+    const cached = getCache(username);
+    if (cached && cached.length > 0) {
+      reposRef.current = [...cached];
+      setRepos([...cached]);
+      setLoading(false);
+    }
+
     let cancelled = false;
 
     const fetchRepos = async () => {
       try {
-        setLoading(true);
+        if (!cached || cached.length === 0) {
+          setLoading(true);
+        }
         
-        // Headers para la petición - añadir token si existe en variables de entorno
-        const headers = {
-          'Accept': 'application/vnd.github.v3+json'
-        };
-        
-        // Si hay un token de GitHub, usarlo (opcional, mejora el rate limit)
+        const headers = { 'Accept': 'application/vnd.github.v3+json' };
         if (import.meta.env.VITE_GITHUB_TOKEN) {
           headers['Authorization'] = `Bearer ${import.meta.env.VITE_GITHUB_TOKEN}`;
         }
@@ -144,103 +191,104 @@ export const useGitHubRepos = (username) => {
           { headers }
         );
         
-        // Verificar rate limit solo si hay error
         const remaining = response.headers.get('X-RateLimit-Remaining');
-        const resetTime = response.headers.get('X-RateLimit-Reset');
         
         if (!response.ok) {
+          if (response.status === 403 && cached && cached.length > 0) {
+            console.warn('GitHub API rate limit - usando caché');
+            return;
+          }
           if (response.status === 403) {
+            const resetTime = response.headers.get('X-RateLimit-Reset');
             const resetDate = new Date(resetTime * 1000);
             throw new Error(`Límite de API alcanzado. Se reiniciará a las ${resetDate.toLocaleTimeString()}`);
           }
           if (response.status === 404) {
             throw new Error(`Usuario "${username}" no encontrado en GitHub`);
           }
-          throw new Error(`Error ${response.status}: No se pudieron cargar los repositorios`);
+          throw new Error(`Error ${response.status}`);
         }
 
         const data = await response.json();
         
-        // Filtrar repos fork, privados, README de perfil y portfolio
         const filteredRepos = data.filter(repo => {
-          // Excluir forks y privados
           if (repo.fork || repo.private) return false;
-          
-          // Excluir repo del README de perfil (mismo nombre que el usuario)
           if (repo.name.toLowerCase() === username.toLowerCase()) return false;
-          
-          // Excluir repos de portfolio (variaciones comunes)
           const portfolioNames = ['portfolio', 'portfolio_v', 'portfolio-main', 'my-portfolio'];
           if (portfolioNames.some(name => repo.name.toLowerCase().includes(name))) return false;
-          
-          // Excluir 42_Cursus
           if (repo.name.toLowerCase() === '42_cursus') return false;
-          
           return true;
         });
 
-        // Crear proyectos básicos sin README primero (carga más rápida)
+        // Crear repos con imagen OG de GitHub (disponible inmediatamente, sin API extra)
         const basicRepos = filteredRepos.map(repo => ({
           name: repo.name,
           summary: repo.description || 'Sin descripción',
           url: repo.html_url,
-          image: '/home/default-project.webp',
+          image: getGitHubOGImage(username, repo.name),
           stars: repo.stargazers_count,
           language: repo.language,
           updated_at: repo.updated_at,
           isGitHubRepo: true
         }));
 
-        // Mostrar repos inmediatamente con imagen por defecto
+        reposRef.current = [...basicRepos];
         if (!cancelled) {
-          setRepos(basicRepos);
+          setRepos([...basicRepos]);
           setError(null);
           setLoading(false);
         }
 
-        // Obtener README en segundo plano para extraer imágenes
+        // Si quedan pocas peticiones, guardar caché y salir
+        if (remaining !== null && parseInt(remaining) < 5) {
+          console.warn(`GitHub API: quedan ${remaining} peticiones. Saltando READMEs.`);
+          setCache(username, reposRef.current);
+          return;
+        }
+
+        // Intentar obtener mejores imágenes de los READMEs en segundo plano
         if (cancelled) return;
         const topRepos = filteredRepos.slice(0, 15);
         
-        // Procesar repos en paralelo para obtener imágenes
-        const reposWithImages = await Promise.all(
-          topRepos.map(async (repo, index) => {
-            try {
-              const readme = await fetchReadme(username, repo.name);
+        const promises = topRepos.map(async (repo, index) => {
+          try {
+            const readme = await fetchReadme(username, repo.name);
+            
+            if (readme && !cancelled) {
+              const image = extractImageFromMarkdown(readme, repo.html_url);
+              const description = extractDescriptionFromMarkdown(readme);
               
-              if (readme) {
-                const image = extractImageFromMarkdown(readme, repo.html_url);
-                const description = extractDescriptionFromMarkdown(readme);
-                
-                return {
-                  ...basicRepos[index],
-                  summary: description || basicRepos[index].summary,
-                  image: image || basicRepos[index].image
+              // Solo actualizar si encontramos una imagen real del README
+              const hasNewData = image || description;
+              if (hasNewData) {
+                reposRef.current[index] = {
+                  ...reposRef.current[index],
+                  ...(description && { summary: description }),
+                  ...(image && { image })
                 };
+                
+                if (!cancelled) {
+                  setRepos([...reposRef.current]);
+                }
               }
-              
-              return basicRepos[index];
-            } catch (err) {
-              return basicRepos[index];
             }
-          })
-        );
-        
-        // Actualizar todos los repos - crear un nuevo array completamente
-        const finalRepos = basicRepos.map((repo, index) => {
-          if (index < reposWithImages.length) {
-            return reposWithImages[index];
+          } catch (err) {
+            // Ignorar errores individuales - la imagen OG se mantiene
           }
-          return repo;
         });
+        
+        await Promise.all(promises);
+        
         if (!cancelled) {
-          setRepos(finalRepos);
+          setCache(username, reposRef.current);
         }
       } catch (err) {
         console.error('Error fetching GitHub repos:', err);
         if (!cancelled) {
-          setError(err.message);
-          setRepos([]);
+          if (!cached || cached.length === 0) {
+            setError(err.message);
+            setRepos([]);
+          }
           setLoading(false);
         }
       }

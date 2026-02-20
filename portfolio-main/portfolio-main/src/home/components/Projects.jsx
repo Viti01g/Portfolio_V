@@ -20,6 +20,8 @@ export const Projects = () => {
               <img
                 src={project.image}
                 alt={project.name}
+                loading="eager"
+                decoding="async"
                 fill="cover"
                 className="h-full w-full mx-3 my-5 object-cover"
               />
