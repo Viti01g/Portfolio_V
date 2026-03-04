@@ -17,6 +17,12 @@
 		"summary": "Software Engineering student at 42 Madrid 💻. I consider myself a proactive person, with a great work ethic and good social skills. I specialize in full stack application development.",
 		"projects": [
 			{
+				"name": "Ft_Transcendence",
+				"image": "/home/transcendence.webp",
+				"summary": "Development of a web application using React and Node.js, with authentication and real-time chat features.",
+				"url": "https://github.com/Viti01g/Ft_Transcendence"
+			},
+			{
 				"name": "TFG Desarrollo de Aplicaciones Multiplataforma",
 				"image": "/home/tfgdam.webp",
 				"summary": "Development of a native Android mobile application (Kotlin) supported by a Spring Boot and MySQL backend, designed to optimize healthcare management.",
