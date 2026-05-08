@@ -134,6 +134,15 @@
 				"date": "Sept 2020 - Jun 2022",
 				"key": "3"
 			}
-		]
+		],
+		"certificates_intro": "Here are all my current certifications.",
+    	"certificates": [
+     	 {
+       		 "alt": "Salesforce - Platform Foundations (7773434)",
+       		 "logo": "/about/pltFound.webp",
+      		 "url": "https://trailhead.salesforce.com/en/credentials/verification/",
+        	 "key": "2"
+     	 }
+  	  ]
 	}
 }
