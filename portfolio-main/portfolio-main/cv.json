@@ -111,12 +111,20 @@
 		"education_intro": "Right now I'm focused on completing Software Engineering at 42 Madrid.",
 		"education": [
 			{
+				"area": "Computer Science",
+				"company": "UNIR - Universidad Internacional de La Rioja",
+				"logo": "/about/unir_logo.webp",
+				"url": "https://www.unir.net/",
+				"date": "Oct 2026 - Now",
+				"key": "1"
+			},
+			{
 				"area": "Software Engineering",
 				"company": "42 The Network",
 				"logo": "/about/42.webp",
 				"url": "https://www.42network.org/",
 				"date": "Jan 2023 - Now",
-				"key": "1"
+				"key": "2"
 			},
 			{
 				"area": "Multiplatform Application Development",
@@ -124,7 +132,7 @@
 				"logo": "/about/nebrijaFp.webp",
 				"url": "https://www.fpnebrija.com/",
 				"date": "Sept 2023 - Jun 2025",
-				"key": "2"
+				"key": "3"
 			},
 			{
 				"area": "3D Animation, Games & Interactive Environments",
@@ -132,7 +140,7 @@
 				"logo": "/about/Ces-fp.webp",
 				"url": "https://www.escuelaces.com/",
 				"date": "Sept 2020 - Jun 2022",
-				"key": "3"
+				"key": "4"
 			}
 		],
 		"certificates_intro": "Here are all my current certifications.",
